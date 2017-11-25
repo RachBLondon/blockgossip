@@ -21,7 +21,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "/auth/google/callback"
+      callbackURL: process.env.ENV === 'LOCAL' ? "/auth/google/callback" : "https://blockgossip-dev.herokuapp.com/auth/google/callback"
     },
     (accessToken, refreshToken, profile, done) => {
       User.findOne({ googleID: profile.id }).then(existingUser => {
@@ -34,7 +34,6 @@ passport.use(
           });
         }
       });
-      // done()
     }
   )
 );
